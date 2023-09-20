@@ -1,5 +1,9 @@
 image: gradle:8.1.1-jdk17-alpine
 
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - chmod +x gradlew
+
 stages:
   - test
 
