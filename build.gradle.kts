@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "org.example"
+group = "com.ralphdugue"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -19,7 +19,7 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }
 
 application {
