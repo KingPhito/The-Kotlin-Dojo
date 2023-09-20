@@ -1,5 +1,9 @@
 package arrays
 
+/**
+ * Given a matrix of m x n elements (m rows, n columns), return a spiral readout of its values going clockwise
+ * & moving inward layer by layer (starting from the top-left).
+ */
 object SpiralTraversalMatrix {
 
     fun spiralTraversal(matrix: Array<Array<Int>>): List<Int> {

@@ -1,5 +1,8 @@
 package arrays
 
+/**
+ * Given an n x n two-dimensional matrix of numbers, rotate the matrix 90 degrees to the right (clockwise).
+ */
 object TwoDMatrix {
 
     fun rotate2DMatrix(matrix: Array<IntArray>): Array<IntArray> {

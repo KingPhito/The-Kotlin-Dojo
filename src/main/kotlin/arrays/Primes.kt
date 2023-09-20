@@ -1,5 +1,8 @@
 package arrays
 
+/**
+ * Given an integer n, return the number of prime numbers that are strictly less than n.
+ */
 object Primes {
     fun primes(n: Int): List<Int> {
         val result = mutableListOf<Int>()

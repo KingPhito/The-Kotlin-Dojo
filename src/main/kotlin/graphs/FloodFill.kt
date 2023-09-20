@@ -1,26 +1,67 @@
 package graphs
 
 import java.awt.Point
+import java.util.Stack
 
+/**
+ * An image is represented by a 2-D array of integers, each integer representing the pixel value of the image
+ * (from 0 to 65535).
+ *
+ * Given a coordinate (sr, sc) representing the starting pixel (row and column) of the flood fill, and a pixel
+ * value newColor, "flood fill" the image.
+ *
+ * To perform a "flood fill", consider the starting pixel, plus any pixels connected 4-directionally to the
+ * starting pixel of the same color as the starting pixel, plus any pixels connected 4-directionally to those
+ * pixels (also with the same color as the starting pixel), and so on. Replace the color of all the
+ * aforementioned pixels with the newColor.
+ *
+ * At the end, return the modified image.
+ */
 object FloodFill {
 
-    fun floodFill(image: Array<IntArray>, sr: Int, sc: Int, color: Int): Array<IntArray> {
+    fun floodFillDFS(image: Array<IntArray>, sr: Int, sc: Int, color: Int): Array<IntArray> {
         val oldColor = image[sr][sc]
 
         if (oldColor == color) return image
 
-        tailrec fun dfsFill(sr: Int, sc: Int) {
-            if (sr in image.indices && sc in image[0].indices && image[sr][sc] == oldColor) {
-                image[sr][sc] = color
+        val stack = Stack<Point>()
+        stack.push(Point(sc, sr))
 
-                dfsFill(sr+1, sc)
-                dfsFill(sr-1, sc)
-                dfsFill(sr, sc+1)
-                dfsFill(sr, sc-1)
+        while (stack.isNotEmpty()) {
+            val pixel = stack.pop()
+
+            if (pixel.x in image.indices && pixel.y in image.indices && image[pixel.x][pixel.y] == oldColor) {
+                image[pixel.x][pixel.y] = color
+
+                listOf(
+                    Point(pixel.x+1, pixel.y),
+                    Point(pixel.x-1, pixel.y),
+                    Point(pixel.x, pixel.y+1),
+                    Point(pixel.x, pixel.y-1)
+                ).forEach { stack.push(it) }
             }
         }
 
-        dfsFill(sr, sc)
+        return image
+    }
+
+    fun floodFillDFSRecursive(image: Array<IntArray>, sr: Int, sc: Int, color: Int): Array<IntArray> {
+        val oldColor = image[sr][sc]
+
+        if (oldColor == color) return image
+
+        tailrec fun dfs(sr: Int, sc: Int) {
+            if (sr in image.indices && sc in image[0].indices && image[sr][sc] == oldColor) {
+                image[sr][sc] = color
+
+                dfs(sr+1, sc)
+                dfs(sr-1, sc)
+                dfs(sr, sc+1)
+                dfs(sr, sc-1)
+            }
+        }
+
+        dfs(sr, sc)
 
         return image
     }
@@ -30,28 +71,24 @@ object FloodFill {
 
         if (oldColor == color) return image
 
-        val queue = mutableListOf<Point>()
+        val queue = ArrayDeque<Point>()
         queue.add(Point(sr, sc))
 
         while (queue.isNotEmpty()) {
-            val point = queue.removeAt(0)
-            image[point.x][point.y] = color
+            val pixel = queue.removeFirst()
 
-            val up = Point(point.x+1, point.y)
-            val down = Point(point.x-1, point.y)
-            val left = Point(point.x, point.y-1)
-            val right = Point(point.x, point.y+1)
+            if (pixel.x in image.indices && pixel.y in image.indices && image[pixel.x][pixel.y] == oldColor) {
+                image[pixel.x][pixel.y] = color
 
-            if (needsFill(image, up, oldColor)) queue.add(up)
-            if (needsFill(image, down, oldColor)) queue.add(down)
-            if (needsFill(image, left, oldColor)) queue.add(left)
-            if (needsFill(image, right, oldColor)) queue.add(right)
+                listOf(
+                    Point(pixel.x + 1, pixel.y),
+                    Point(pixel.x - 1, pixel.y),
+                    Point(pixel.x, pixel.y + 1),
+                    Point(pixel.x, pixel.y - 1)
+                ).forEach { queue.add(it) }
+            }
         }
 
         return image
-    }
-
-    private fun needsFill(image: Array<IntArray>, point: Point, oldColor: Int): Boolean {
-        return point.x in image.indices && point.y in image[0].indices && image[point.x][point.y] == oldColor
     }
 }

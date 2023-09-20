@@ -13,7 +13,7 @@ class KeysAndRoomsTest {
                 listOf()
             )
             val expected = true
-            val actual = KeysAndRooms.canVisitAllRooms(rooms)
+            val actual = KeysAndRooms.canVisitAllRoomsDFS(rooms)
             assertEquals(expected, actual)
         }
 
@@ -26,7 +26,7 @@ class KeysAndRoomsTest {
                 listOf(0)
             )
             val expected = false
-            val actual = KeysAndRooms.canVisitAllRooms(rooms)
+            val actual = KeysAndRooms.canVisitAllRoomsDFS(rooms)
             assertEquals(expected, actual)
         }
 }

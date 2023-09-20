@@ -1,10 +1,16 @@
 package graphs
 
 import java.util.*
+import kotlin.collections.ArrayDeque
+import kotlin.collections.HashMap
 
-class Node(var `val`: Int) {
-    var neighbors = mutableListOf<Node?>()
-}
+/**
+ * Given a reference of a node in a connected undirected graph.
+ * Return a deep copy (clone) of the graph.
+ * Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
+ */
+data class Node(var `val`: Int, var neighbors: ArrayList<Node?> = ArrayList())
+
 
 object CloneGraph {
 
@@ -82,23 +88,28 @@ object CloneGraph {
         return clone[node]
     }
 
+    /**
+     * This is a recursive solution to the BFS problem. It is not as efficient as the iterative solution.
+     * It is included here for completeness. It is not tested in the unit tests because it can cause
+     * stack overflow errors.
+     */
     fun cloneGraphBFSRecursive(node: Node?): Node? {
         val clone = mutableMapOf<Node, Node>()
         return bfs(node, clone)
     }
 
-    private fun bfs(node: Node?, clone: MutableMap<Node, Node>): Node? {
+    private fun bfs(node: Node?, clone: MutableMap<Node, Node>, queue: ArrayDeque<Node> = ArrayDeque()): Node? {
         if (node == null) return null
 
         clone[node] = Node(node.`val`)
 
         for (neighbor in node.neighbors) {
-            if (!clone.contains(neighbor) && neighbor != null) {
-                clone[neighbor] = Node(neighbor.`val`)
-                bfs(neighbor, clone)
+            neighbor?.let {
+                queue.add(it)
             }
-            clone[node]?.neighbors?.add(clone[neighbor])
         }
+
+        if (queue.isNotEmpty()) bfs(queue.removeFirst(), clone, queue)
 
         return clone[node]
     }
