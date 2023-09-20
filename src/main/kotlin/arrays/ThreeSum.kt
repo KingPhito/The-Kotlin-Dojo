@@ -24,7 +24,7 @@ object ThreeSum {
         return result
     }
 
-    fun threeSum(list: MutableList<Int>): List<List<Int>> {
+    fun threeSum(list: List<Int>): List<List<Int>> {
         val result = hashSetOf<List<Int>>()
         val sorted = list.sorted()
 

@@ -4,6 +4,9 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - chmod +x gradlew
 
+variables:
+  JAVA_OPTS: "-Xmx6g"
+
 stages:
   - test
 
