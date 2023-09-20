@@ -14,13 +14,7 @@ class ThreeSumTest {
         )
         val actual = ThreeSum.threeSum(nums)
         assertEquals(expected.size, actual.size)
-        expected.forEach { expectedList ->
-            assertTrue(actual.any { actualList ->
-                expectedList.all { expectedItem ->
-                    actualList.contains(expectedItem)
-                }
-            })
-        }
+        assert(expected == actual)
     }
 
     @Test
@@ -31,12 +25,6 @@ class ThreeSumTest {
         )
         val actual = ThreeSum.threeSum(nums)
         assertEquals(expected.size, actual.size)
-        expected.forEach { expectedList ->
-            assertTrue(actual.any { actualList ->
-                expectedList.all { expectedItem ->
-                    actualList.contains(expectedItem)
-                }
-            })
-        }
+        assert(expected == actual)
     }
 }

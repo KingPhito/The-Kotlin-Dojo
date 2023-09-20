@@ -14,11 +14,8 @@ object ThreeSum {
 
         while (start < end) {
             val sum = nums[start] + nums[end]
-            when {
-                sum == target -> result.add(Pair(start, end))
-                sum < target -> start++
-                else -> end--
-            }
+            if (sum == target) result.add(Pair(nums[start], nums[end]))
+            if (sum > target) end-- else start++
         }
 
         return result
