@@ -10,7 +10,7 @@ import graphs.CloneGraph.Node
 
 object CloneGraph {
 
-    data class Node(var `val`: Int, var neighbors: MutableList<Node?> = mutableListOf())
+    class Node(var `val`: Int, var neighbors: MutableList<Node?> = mutableListOf())
 
     fun cloneGraphDFS(node: Node?): Node? {
         if (node == null) return null
@@ -21,19 +21,13 @@ object CloneGraph {
 
         while (stack.isNotEmpty()) {
             val current = stack.removeLast()
-
-            if (!clone.contains(current)) {
-                clone[current] = Node(current.`val`)
-                for (neighbor in current.neighbors) {
-                    neighbor?.let {
-                        clone[it] = Node(it.`val`)
-                        stack.add(it)
-                    }
+            if (!clone.contains(current)) clone[current] = Node(current.`val`)
+            current.neighbors.filterNotNull().forEach {
+                if (!clone.contains(it)) {
+                    clone[it] = Node(it.`val`)
+                    stack.add(it)
                 }
-            }
-
-            for (neighbor in current.neighbors) {
-                clone[current]?.neighbors?.add(clone[neighbor])
+                clone[current]?.neighbors?.add(clone[it])
             }
         }
 
@@ -68,18 +62,13 @@ object CloneGraph {
 
         while (queue.isNotEmpty()) {
             val current = queue.removeFirst()
-
-            if (!clone.contains(current)) {
-                clone[current] = Node(current.`val`)
-                for (neighbor in current.neighbors) {
-                    neighbor?.let {
-                        queue.addLast(it)
-                        clone[it] = Node(it.`val`)}
+            if (!clone.contains(current)) clone[current] = Node(current.`val`)
+            current.neighbors.filterNotNull().forEach {
+                if (!clone.contains(it)) {
+                    clone[it] = Node(it.`val`)
+                    queue.add(it)
                 }
-            }
-
-            for (neighbor in current.neighbors) {
-                clone[current]?.neighbors?.add(clone[neighbor])
+                clone[current]?.neighbors?.add(clone[it])
             }
         }
 
