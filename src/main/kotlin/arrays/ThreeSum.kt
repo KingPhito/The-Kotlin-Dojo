@@ -6,29 +6,34 @@ package arrays
  */
 object ThreeSum {
 
-    private fun twoSum(target: Int, list: List<Int>, index: Int): Pair<Int, Int>? {
-        var start = index + 1
-        var end = list.size - 1
-        if (start >= end) return null
-        var current = list[start] + list[end]
-        while (current != target) {
-            if (current > target) end--
-            if (current < target) start++
-            if (start >= end) return null
-            current = list[start] + list[end]
+    private fun twoSum(target: Int, nums: List<Int>, s: Int): List<Pair<Int, Int>> {
+        var start = s
+        var end = nums.size - 1
+
+        val result = mutableListOf<Pair<Int, Int>>()
+
+        while (start < end) {
+            val sum = nums[start] + nums[end]
+            when {
+                sum == target -> result.add(Pair(start, end))
+                sum < target -> start++
+                else -> end--
+            }
         }
-        return Pair(start, end)
+
+        return result
     }
 
-    fun threeSum(list: MutableList<Int>): HashSet<IntArray> {
-        val result = hashSetOf<IntArray>()
-        list.sort()
-        for (i in 0 until list.size - 2) {
-            val target = -list[i]
-            val twoSum = twoSum(target, list, i)
-            val row = intArrayOf(list[i], list[twoSum?.first ?: continue], list[twoSum.second])
-            result.add(row)
+    fun threeSum(list: MutableList<Int>): List<List<Int>> {
+        val result = hashSetOf<List<Int>>()
+        val sorted = list.sorted()
+
+        sorted.forEachIndexed { i, n ->
+            twoSum(0-n, sorted, i+1).forEach {
+                result.add(listOf(n, it.first, it.second))
+            }
         }
-        return result
+
+        return result.toList()
     }
 }

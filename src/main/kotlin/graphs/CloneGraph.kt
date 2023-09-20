@@ -1,35 +1,33 @@
 package graphs
 
-import java.util.*
-import kotlin.collections.ArrayDeque
-import kotlin.collections.HashMap
+import graphs.CloneGraph.Node
 
 /**
  * Given a reference of a node in a connected undirected graph.
  * Return a deep copy (clone) of the graph.
  * Each node in the graph contains a val (int) and a list (List[Node]) of its neighbors.
  */
-data class Node(var `val`: Int, var neighbors: ArrayList<Node?> = ArrayList())
-
 
 object CloneGraph {
+
+    data class Node(var `val`: Int, var neighbors: MutableList<Node?> = mutableListOf())
 
     fun cloneGraphDFS(node: Node?): Node? {
         if (node == null) return null
 
-        val clone = HashMap<Node, Node>()
-        val stack = Stack<Node>()
-        stack.push(node)
+        val clone = mutableMapOf<Node, Node>()
+        val stack = ArrayDeque<Node>()
+        stack.add(node)
 
         while (stack.isNotEmpty()) {
-            val current = stack.pop()
+            val current = stack.removeLast()
 
             if (!clone.contains(current)) {
                 clone[current] = Node(current.`val`)
                 for (neighbor in current.neighbors) {
                     neighbor?.let {
                         clone[it] = Node(it.`val`)
-                        stack.push(it)
+                        stack.add(it)
                     }
                 }
             }
